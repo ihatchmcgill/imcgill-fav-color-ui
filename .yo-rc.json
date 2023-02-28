@@ -1,0 +1,14 @@
+{
+  "generator-fullstack-app": {
+    "appName": "imcgill-fav-color-ui",
+    "repoName": "imcgill-fav-color-ui",
+    "orgName": "byu-oit-training",
+    "awsAccountDev": "byu-oit-fullstack-trn",
+    "awsAccountPrd": "byu-oit-fullstack-trn",
+    "awsAccountDevNumber": "863362256468",
+    "awsAccountPrdNumber": "863362256468",
+    "confirmStandardChangeTemplate": false,
+    "standardChangeTemplate": "Codepipeline-Standard-Change",
+    "template": "nuxt-frontend"
+  }
+}
