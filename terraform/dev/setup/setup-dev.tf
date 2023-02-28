@@ -5,9 +5,9 @@ provider "aws" {
 terraform {
   backend "s3" {
     encrypt        = true
-    bucket         = "terraform-state-storage-863362256468"   // TODO replace <DEV_AWS_ACCT_NUM>
-    dynamodb_table = "terraform-state-lock-863362256468"      // TODO replace <DEV_AWS_ACCT_NUM>
-    key            = "imcgill-fav-color-ui/dev/setup.tfstate" // TODO replace <APP_NAME>
+    bucket         = "terraform-state-storage-863362256468"
+    dynamodb_table = "terraform-state-lock-863362256468"
+    key            = "imcgill-fav-color-ui/dev/setup.tfstate"
     region         = "us-west-2"
   }
   required_providers {
@@ -39,7 +39,7 @@ variable "app_dynamics_key" {
 }
 
 locals {
-  app_name = "imcgill-fav-color-ui-dev" // TODO replace <APP_NAME>
+  app_name = "imcgill-fav-color-ui-dev"
 }
 
 module "setup" {
@@ -53,8 +53,8 @@ module "setup" {
   tags = {
     env              = "dev"
     team             = "OIT-BYU-APPS-CUSTOM"
-    data-sensitivity = "confidential"                                    // TODO update data-sensitivity (if needed)
-    repo             = "https://github.com/byu-oit/imcgill-fav-color-ui" // TODO Update REPO_NAME
+    data-sensitivity = "confidential"
+    repo             = "https://github.com/byu-oit/imcgill-fav-color-ui"
     app              = local.app_name
   }
 }
