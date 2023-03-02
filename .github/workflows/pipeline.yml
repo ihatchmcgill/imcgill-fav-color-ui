@@ -139,13 +139,13 @@ jobs:
           working-directory: ${{ env.tf_working_dir }}
           terraform-plan-file: plan
 
-      - name: Start Standard Change
-        uses: byu-oit/github-action-start-standard-change@v1
-        id: start-standard-change
-        with:
-          client-key: ${{ env.std_change_key }}
-          client-secret: ${{ env.std_change_secret }}
-          template-id: ${{ env.template_id }}
+#      - name: Start Standard Change
+#        uses: byu-oit/github-action-start-standard-change@v1
+#        id: start-standard-change
+#        with:
+#          client-key: ${{ env.std_change_key }}
+#          client-secret: ${{ env.std_change_secret }}
+#          template-id: ${{ env.template_id }}
 
       - name: Terraform Apply
         working-directory: ${{ env.tf_working_dir }}
@@ -164,16 +164,16 @@ jobs:
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --path '/*' --distribution-id ${{ steps.terraform-outputs.outputs.cf_distribution_id }}
-
-      - name: End Standard Change
-        uses: byu-oit/github-action-end-standard-change@v1
-        if: ${{ always() && steps.start-standard-change.outcome == 'success' }} # Run if RFC started, even if the deploy failed
-        with:
-          client-key: ${{ env.std_change_key }}
-          client-secret: ${{ env.std_change_secret }}
-          change-sys-id: ${{ steps.start-standard-change.outputs.change-sys-id }}
-          work-start: ${{ steps.start-standard-change.outputs.work-start }}
-          success: ${{ steps.deploy.outcome == 'success' }}
+#
+#      - name: End Standard Change
+#        uses: byu-oit/github-action-end-standard-change@v1
+#        if: ${{ always() && steps.start-standard-change.outcome == 'success' }} # Run if RFC started, even if the deploy failed
+#        with:
+#          client-key: ${{ env.std_change_key }}
+#          client-secret: ${{ env.std_change_secret }}
+#          change-sys-id: ${{ steps.start-standard-change.outputs.change-sys-id }}
+#          work-start: ${{ steps.start-standard-change.outputs.work-start }}
+#          success: ${{ steps.deploy.outcome == 'success' }}
 
       - name: Get Current Timestamp
         id: date
