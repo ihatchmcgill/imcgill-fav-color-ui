@@ -20,7 +20,7 @@ terraform {
 }
 
 locals {
-  app_name = "imcgill-fav-color-ui-dev"      // TODO replace <APP_NAME>
+  app_name = "imcgill-fav-color-ui-dev"  // TODO replace <APP_NAME>
   url      = "${local.app_name}.byu.edu" // TODO double check if <APP_NAME>.byu.edu is what you want for your public URL
   default_tags = {
     repo             = "https://github.com/byu-oit/imcgill-fav-color-ui" # TODO fix to match your GitHub repo
