@@ -163,7 +163,7 @@ jobs:
         run: aws s3 sync ${{ env.app_working_dir }}/dist s3://${{ env.bucket_name }}
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --path '/*' --distribution-id ${{ steps.terraform-outputs.outputs.cf_distribution_id }}
+        run: aws cloudfront create-invalidation --path '/*' --distribution-id ${{ env.cf_distribution_id }}
 #
 #      - name: End Standard Change
 #        uses: byu-oit/github-action-end-standard-change@v1
