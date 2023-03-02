@@ -1,8 +1,8 @@
 {
-  "name": "frontend-template-nuxt",
+  "name": "fav-color-frontend",
   "version": "0.0.1",
-  "description": "BYU Apps Custom frontend Nuxt project template.",
-  "author": "BYU Apps Custom",
+  "description": "Fav Color Application frontend.",
+  "author": "Isaac McGill",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
