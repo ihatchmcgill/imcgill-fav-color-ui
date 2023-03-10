@@ -1,69 +1,115 @@
-<template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <vue-logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="text-h5">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower
-            developers to create amazing applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com" target="_blank">documentation</a>.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">discord</a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a href="https://github.com/vuetifyjs/vuetify/issues" target="_blank" title="contribute">issue board</a>.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.
-          </p>
-          <div class="text-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a href="https://nuxtjs.org/" target="_blank">Nuxt Documentation</a>
-          <br>
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">Nuxt GitHub</a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" text nuxt to="/inspire">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
-</template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import VueLogo from '~/components/VueLogo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+<script>
+import FavoriteColorCard from "~/components/FavoriteColorCard.vue";
+import ColorPicker from 'vue-color-picker-wheel'
 
-@Component({
-  components: {
-    VueLogo,
-    VuetifyLogo
-  }
-})
-export default class IndexPage extends Vue {
-  head (this: IndexPage): object {
+export default {
+  data() {
     return {
-      title: 'Home'
+      addDialog: false,
+      newByuId: '',
+      newStudentName: '',
+      newFavColorName: '',
+      newFavColorId: 'white',
+      students: [],
     }
+  },
+  mounted() {
+    this.updateList()
+  },
+  methods: {
+    async updateList(){
+      this.students=[]
+      const response = await this.$axios.get('/')
+      const data = response.data
+      //console.log(data)
+      data.forEach(student => this.students.push({
+        byuId: student.byuId,
+        name: student.name,
+        favColorName: student.favColorName,
+        favColorId: student.favColorId
+      }))
+    },
+    async addFavoriteColor() {
+      const body = {
+        name: this.newStudentName,
+        favColorName: this.newFavColorName,
+        favColorId: this.newFavColorId
+      }
+      const response = await this.$axios.$post(`/${this.newByuId}`, body)
+      console.log(response)
+
+      this.newStudentName = ''
+      this.newByuId = ''
+      this.newFavColorName = ''
+      this.newFavColorId = 'white'
+      this.addDialog = false
+
+      await this.updateList()
+    },
+    async deleteStudent(student){
+      const response = await this.$axios.$delete(`/${student.byuId}`)
+      console.log(response)
+      await this.updateList()
+    },
+    async updateColor(newColor, newColorId, student){
+      const body = {
+        newFavColorName: newColor,
+        newFavColorId: newColorId
+      }
+      const response = await this.$axios.$put(`/${student.byuId}`, body)
+      console.log(response)
+      await this.updateList()
+    }
+  },
+  components: {
+    FavoriteColorCard, ColorPicker
   }
 }
 </script>
+
+<template>
+  <body>
+    <v-container>
+      <v-layout row justify-center align-center>
+        <v-flex xs1>
+          <v-dialog v-model="addDialog" max-width="400">
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn  color="blue" v-bind="attrs" v-on="on">
+                Add New
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card :color="newFavColorId">
+                <v-container>
+                  <v-layout row justify-center align-center>
+                    <v-flex xs9>
+                      <color-picker v-model="newFavColorId"></color-picker>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card>
+              <v-text-field outlined v-model="newStudentName" placeholder="Please Enter Your Name" />
+              <v-text-field outlined v-model="newByuId" placeholder="Please Enter Your BYU-ID"/>
+              <v-text-field outlined v-model="newFavColorName" placeholder="Please Enter Your Favorite Color Name" />
+              <v-btn color="blue" @click="addFavoriteColor">
+                Save
+              </v-btn>
+              <v-btn color="grey" @click="addDialog=false;newFavColorName='';newByuId='';newStudentName=''">
+                Cancel
+              </v-btn>
+            </v-card>
+          </v-dialog>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap justify-start>
+        <v-flex md2 v-for="student in students" :key="byuID">
+          <favorite-color-card :byuId="student.byuId" :name="student.name" :favColorName="student.favColorName"
+                               :favColorId="student.favColorId"
+                               @colorChanged="(newColor, newColorId) => updateColor(newColor, newColorId, student)"
+                               @colorDeleted="deleteStudent(student)"/>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </body>
+</template>

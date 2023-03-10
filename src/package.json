@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@byu-oit/nuxt-common": "^2.16.0",
+    "vue-color-picker-wheel": "^0.4.3",
     "webpack": "^4.46.0"
   },
   "//peerDependenciesComment": "The 'peerDependencies' section is only to help IDE autocompletion. It should only list a few necessary sub-dependencies from @byu-oit/nuxt-common",

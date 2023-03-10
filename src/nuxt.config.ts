@@ -2,8 +2,8 @@ require('dotenv').config()
 const API_SERVER = (process.env.NUXT_ENV_API_SERVER || 'https://api-sandbox.byu.edu').replace(/\/+$/, '') // strip trailing slash(es)
 
 export default {
+    components: true,
   ssr: false,
-
   /*
    ** Headers of the page
    */
@@ -57,7 +57,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: (`${API_SERVER}`).replace(/\/?$/, '/'), // ensure trailing slash // TODO: If most of your API endpoints start from a common base, then change it here, or add it after API_SERVER, like `${API_SERVER}/foo`
+    baseURL: 'https://imcgill-fav-color-dev.byu-oit-fullstack-trn.amazon.byu.edu', // TODO: If most of your API endpoints start from a common base, then change it here, or add it after API_SERVER, like `${API_SERVER}/foo`
     https: true
   },
   /*
