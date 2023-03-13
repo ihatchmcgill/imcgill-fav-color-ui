@@ -1,28 +1,31 @@
 
 <script>
-import FavoriteColorCard from "~/components/FavoriteColorCard.vue";
 import ColorPicker from 'vue-color-picker-wheel'
+import FavoriteColorCard from '~/components/FavoriteColorCard.vue'
 
 export default {
-  data() {
+  components: {
+    FavoriteColorCard, ColorPicker
+  },
+  data () {
     return {
       addDialog: false,
       newByuId: '',
       newStudentName: '',
       newFavColorName: '',
       newFavColorId: 'white',
-      students: [],
+      students: []
     }
   },
-  mounted() {
+  mounted () {
     this.updateList()
   },
   methods: {
-    async updateList(){
-      this.students=[]
+    async updateList () {
+      this.students = []
       const response = await this.$axios.$get('/')
       const data = response.data
-      //console.log(data)
+      // console.log(data)
       data.forEach(student => this.students.push({
         byuId: student.byuId,
         name: student.name,
@@ -30,7 +33,7 @@ export default {
         favColorId: student.favColorId
       }))
     },
-    async addFavoriteColor() {
+    async addFavoriteColor () {
       const body = {
         name: this.newStudentName,
         favColorName: this.newFavColorName,
@@ -47,12 +50,12 @@ export default {
 
       await this.updateList()
     },
-    async deleteStudent(student){
+    async deleteStudent (student) {
       const response = await this.$axios.$delete(`/${student.byuId}`)
       console.log(response)
       await this.updateList()
     },
-    async updateColor(newColor, newColorId, student){
+    async updateColor (newColor, newColorId, student) {
       const body = {
         newFavColorName: newColor,
         newFavColorId: newColorId
@@ -61,9 +64,6 @@ export default {
       console.log(response)
       await this.updateList()
     }
-  },
-  components: {
-    FavoriteColorCard, ColorPicker
   }
 }
 </script>
@@ -74,8 +74,8 @@ export default {
       <v-layout row justify-center align-center>
         <v-flex xs1>
           <v-dialog v-model="addDialog" max-width="400">
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn  color="blue" v-bind="attrs" v-on="on">
+            <template #activator="{ attrs, on }">
+              <v-btn color="blue" v-bind="attrs" v-on="on">
                 Add New
               </v-btn>
             </template>
@@ -84,14 +84,14 @@ export default {
                 <v-container>
                   <v-layout row justify-center align-center>
                     <v-flex xs9>
-                      <color-picker v-model="newFavColorId"></color-picker>
+                      <color-picker v-model="newFavColorId" />
                     </v-flex>
                   </v-layout>
                 </v-container>
               </v-card>
-              <v-text-field outlined v-model="newStudentName" placeholder="Please Enter Your Name" />
-              <v-text-field outlined v-model="newByuId" placeholder="Please Enter Your BYU-ID"/>
-              <v-text-field outlined v-model="newFavColorName" placeholder="Please Enter Your Favorite Color Name" />
+              <v-text-field v-model="newStudentName" outlined placeholder="Please Enter Your Name" />
+              <v-text-field v-model="newByuId" outlined placeholder="Please Enter Your BYU-ID" />
+              <v-text-field v-model="newFavColorName" outlined placeholder="Please Enter Your Favorite Color Name" />
               <v-btn color="blue" @click="addFavoriteColor">
                 Save
               </v-btn>
@@ -103,11 +103,15 @@ export default {
         </v-flex>
       </v-layout>
       <v-layout row wrap justify-start>
-        <v-flex md2 v-for="student in students" :key="byuID">
-          <favorite-color-card :byuId="student.byuId" :name="student.name" :favColorName="student.favColorName"
-                               :favColorId="student.favColorId"
-                               @colorChanged="(newColor, newColorId) => updateColor(newColor, newColorId, student)"
-                               @colorDeleted="deleteStudent(student)"/>
+        <v-flex v-for="student in students" :key="student.byuId" md2>
+          <favorite-color-card
+            :byu-id="student.byuId"
+            :name="student.name"
+            :fav-color-name="student.favColorName"
+            :fav-color-id="student.favColorId"
+            @colorChanged="(newColor, newColorId) => updateColor(newColor, newColorId, student)"
+            @colorDeleted="deleteStudent(student)"
+          />
         </v-flex>
       </v-layout>
     </v-container>
