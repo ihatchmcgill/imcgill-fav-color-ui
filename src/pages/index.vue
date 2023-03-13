@@ -24,9 +24,8 @@ export default {
     async updateList () {
       this.students = []
       const response = await this.$axios.$get('/')
-      const data = response.data
-      // console.log(data)
-      data.forEach(student => this.students.push({
+      console.log(response)
+      response.forEach(student => this.students.push({
         byuId: student.byuId,
         name: student.name,
         favColorName: student.favColorName,

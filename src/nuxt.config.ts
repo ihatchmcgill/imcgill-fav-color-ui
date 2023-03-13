@@ -1,5 +1,5 @@
 require('dotenv').config()
-const API_SERVER = (process.env.NUXT_ENV_API_SERVER || 'https://api-sandbox.byu.edu').replace(/\/+$/, '') // strip trailing slash(es)
+// const API_SERVER = (process.env.NUXT_ENV_API_SERVER || 'https://api-sandbox.byu.edu').replace(/\/+$/, '') // strip trailing slash(es)
 
 export default {
   components: true,
@@ -103,7 +103,7 @@ export default {
   buildModules: [['@byu-oit/nuxt-common', {
     pluginOptions: {
       'implicit-grant': {
-        baseUrl: API_SERVER
+        baseUrl: 'https://api-sandbox.byu.edu/'
       }
     }
   }]],
