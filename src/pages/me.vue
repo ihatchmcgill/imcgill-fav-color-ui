@@ -7,7 +7,7 @@
     },
     data() {
       return {
-        name: this.$store.state.user.name.givenName,
+        name: '',
         byuId: this.$store.state.user.byuId,
         favColorName: '',
         favColorId: '',
@@ -18,6 +18,7 @@
       const response = await this.$axios.$get(`/${this.byuId}`)
       this.favColorName = response.favColorName
       this.favColorId = response.favColorId
+      this.name = response.name
     },
     methods: {
       async updateColor(newColorName, newColorId) {

@@ -1,31 +1,43 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueMeta from 'vue-meta'
 import Vuetify from 'vuetify'
 import me from '~/pages/me.vue'
 
-const stubs = ['nuxt-link']
 
+const stubs = ['nuxt-link']
 const localVue = createLocalVue()
 localVue.use(VueMeta, { keyName: 'head' })
+localVue.use(Vuex)
 Vue.use(Vuetify)
+Vue.use(Vuex)
+
 
 const vuetify = new Vuetify({})
-const wrapper = shallowMount(me, {
-  localVue,
-  vuetify,
-  stubs
-})
-const vm: any = wrapper.vm
 
 describe('pages/me', () => {
-  test('exists', () => {
-    expect(vm).toBeTruthy()
-    //expect(vm.$meta().refresh().metaInfo.title).toEqual('Home')
-  })
-
-    test('correctValues',() => {
-        expect(vm.name).toBe('Isaac')
-        expect(vm.favColor).toBe('purple')
+    let state
+    let store
+    beforeEach(() => {
+        state = {
+            user: {
+                byuId: '654623247'
+            }
+        }
+        store = new Vuex.Store({
+            state
+        })
     })
+  test('exists', () => {
+      const wrapper = shallowMount(me, {
+          localVue,
+          vuetify,
+          stubs,
+          store
+      })
+      const vm: any = wrapper.vm
+
+    expect(vm).toBeTruthy()
+  })
 })

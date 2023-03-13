@@ -20,7 +20,7 @@ export default {
   methods: {
     async updateList(){
       this.students=[]
-      const response = await this.$axios.get('/')
+      const response = await this.$axios.$get('/')
       const data = response.data
       //console.log(data)
       data.forEach(student => this.students.push({
